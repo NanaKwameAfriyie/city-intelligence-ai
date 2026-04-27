@@ -61,8 +61,6 @@ streamlit run app.py
 ## 📸 Screenshot
 > Add your app screenshot here
 
-## 🤝 Contributing
-Pull requests are welcome!
-
-## 📄 License
-MIT License
+<img width="1366" height="535" alt="Screenshot 2026-04-28 000236" src="https://github.com/user-attachments/assets/222ddef0-e16a-455e-9b3d-991e4197d7d1" />
+<img width="1376" height="736" alt="City Intelligence AI — Mozilla Firefox 2026-04-25 15-53-10 - frame at 0m38s" src="https://github.com/user-attachments/assets/7a52566d-fa82-4459-a00d-cb1c4ab103ca" />
+<img width="1366" height="728" alt="Screenshot 2026-04-27 235624" src="https://github.com/user-attachments/assets/14e91222-edab-4bde-b3f7-2a06a591a489" />
