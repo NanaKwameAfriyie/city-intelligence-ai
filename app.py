@@ -127,7 +127,7 @@ def make_llm(model_name):
     llm = ChatMistralAI(model=model_name)
     return llm.bind_tools([get_weather, get_news])
 
-def run_agent(chat_messages, llm_with_tools):
+def  run_agent(chat_messages, llm_with_tools):
     lc_messages = []
     for m in chat_messages:
         if m["role"] == "user":
@@ -137,17 +137,33 @@ def run_agent(chat_messages, llm_with_tools):
 
     while True:
         ai_msg = llm_with_tools.invoke(lc_messages)
-        lc_messages.append(ai_msg)
 
+        # No tool calls → we're done, return the final answer
         if not getattr(ai_msg, "tool_calls", None):
             return ai_msg.content
 
-        for tool_call in ai_msg.tool_calls:
+        # Deduplicate tool call IDs before appending to history
+        seen_ids = set()
+        unique_tool_calls = []
+        for tc in ai_msg.tool_calls:
+            if tc["id"] not in seen_ids:
+                seen_ids.add(tc["id"])
+                unique_tool_calls.append(tc)
+
+        # Append a clean AIMessage with deduplicated tool calls
+        lc_messages.append(AIMessage(
+            content=ai_msg.content,
+            tool_calls=unique_tool_calls
+        ))
+
+        # Execute each tool and append its result
+        for tool_call in unique_tool_calls:
             tool_name = tool_call["name"]
             tool_args = tool_call.get("args", {})
             tool_result = tools[tool_name].invoke(tool_args)
-            lc_messages.append(ToolMessage(content=tool_result, tool_call_id=tool_call["id"]))
-
+            lc_messages.append(
+                ToolMessage(content=tool_result, tool_call_id=tool_call["id"])
+            )
 if "messages" not in st.session_state:
     st.session_state.messages = [
         {"role": "assistant", "content": "Hello! I’m City Intelligence. Ask me about any city."}
