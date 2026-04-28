@@ -150,7 +150,7 @@ def run_agent(chat_messages, llm_with_tools):
 
 if "messages" not in st.session_state:
     st.session_state.messages = [
-        {"role": "assistant", "content": "Hello! I’m City Intelligence. Ask me about any city."}
+        {"role": "assistant", "content": "Hello! I'm City Intelligence. Ask me about any city."}
     ]
 
 with st.sidebar:
